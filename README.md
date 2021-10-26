@@ -2,12 +2,12 @@
  Servidor Node de Autenticación y WebSockets
  
 #### Integrantes
-Nicolas Barragan Mena
-Juan Camilo Quintero
-Santiago Mosquera
-Pedro Pablo Mosquera
+1. Nicolas Barragan Mena
+2. Juan Camilo Quintero
+3. Santiago Mosquera
+4. Pedro Pablo Mosquera
 
-####Objetivos
+#### Objetivos
 1. Crear la lógica necesaria para agregar amigos a un party
 2. Cuando un cliente se conecte debe recibir la lista de amigos y cuales se encuentran en línea
 3. Crear la lógica necesaria para habilitar el chat global y chat privado entre miembros de un party
