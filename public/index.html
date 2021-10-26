@@ -1,0 +1,57 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <script defer src="script.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div id="panelLogin" class="panel animate__animated">
+            <form name="formLogin" id="formLogin">
+                <h2 class="text1">Log in</h2>
+                <div id="lblStatus"></div>
+                <div class="formField">
+                    <label for="username" class="text2">Username o email</label>
+                    <input name="username" />
+                </div>
+                <div class="formField">
+                    <label for=password class="text2">Password</label>
+                    <input name="password" />
+                </div>
+                <div class="formField">
+                    <button> Log In </button>
+                </div>
+
+            </form>
+            <a class="panelFooter">Eres nuevo? &nbsp;
+                <span class="btn" onclick="goToRegister()">Registrate</span>
+            </a>
+        </div>
+
+        <div id="panelRegistro" class="panel hide animate__animated">
+            <form name="formRegistro" id="formRegistro">
+                <h2 class="text1">Sign UP</h2>
+                <div id="lblStatus"></div>
+                <div class="formField">
+                    <label for="username" class="text2">Username or email</label>
+                    <input name="username" />
+                </div>
+                <div class="formField">
+                    <label for=password class="text2">Password</label>
+                    <input name="password" />
+                </div>
+                <div class="formField">
+                    <button> Sign Up </button>
+                </div>
+
+            </form>
+            <a class="panelFooter">Ya tienes cuenta? &nbsp;
+                <span class="btn" onclick="goToLogin()">Inicia sesion</span>
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

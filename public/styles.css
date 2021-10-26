@@ -1,0 +1,83 @@
+body {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-color: #241f3c;
+}
+
+.hide {
+  display: none;
+}
+.btn {
+  cursor: pointer;
+}
+.panel {
+  background-color: white;
+  border-radius: 10px;
+  margin: 0 auto;
+  margin-top: 100px;
+  padding-top: 20px;
+  width: 350px;
+}
+
+.panel h2 {
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.text1 {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: #8777d6;
+}
+
+.text2 {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: #474552;
+}
+
+#lblStatus {
+  display: none;
+}
+
+.formField {
+  width: 80%;
+  margin: 10px auto;
+}
+
+.formField label {
+  display: block;
+}
+
+.formField input {
+  width: 100%;
+  height: 35px;
+  border: 1px solid #615b85;
+  border-radius: 5px;
+}
+
+.formField button {
+  width: 100%;
+  height: 35px;
+  background-color: #79589f;
+  border-radius: 5px;
+  color: white;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  margin: 30px 0;
+}
+
+.panelFooter {
+  padding: 20px;
+  display: block;
+  font-size: 17px;
+  color: #4a5568;
+  background-color: #f5f5f5;
+  border-top: 1px solid #ddd;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  text-align: center;
+}
+
+.panelFooter span {
+  color: #79589f;
+  text-decoration: underline;
+}
+
+/*Animations*/
