@@ -23,44 +23,78 @@ class Sockets
     {
         this.io.on('connection', async socket =>
         {
-            console.log('a user connected ' + socket.uid);
+            console.log('A user connected ' + socket.uid);
 
-            let {password, _id:uid , ...user} = await Usuario.findById(socket.uid);
-            user = {id:socket.id,uid, ...user };
+            let {password, _id:uid, ...user} = await Usuario.findById(socket.uid);
+            user = {id:socket.id, uid, ...user};
 
             this.onlineUsers.push(user);
             usuarioConectado(user.uid);
-
-            //Saber que amigos estan enlinea y enviarlos al cliente
-            const onlineFriends = user.friends.filter(f => f.online);
-            //Emitir mensaje de bienvenida    
-            socket.emit('onConnection', { username: user.username});
             
-            //Notificar conexion a los amigos
-            for (const friend of user.friends)
-            {
-                let connected = this.onlineUsers.find(u => u.username == friend.username);
+            //Emitir mensaje de bienvenida
+            socket.emit('onConnection', {username: user.username});
+            
+            //Saber que amigos estan enlinea y enviarlos al cliente
+            //const onlineFriends = user.friends.filter(f => f.online);
 
-                if(connected)
+            //Notificar conexion a los amigos
+            // for (const friend of user.friends)
+            // {
+            //     let connected = this.onlineUsers.find(u => u.username == friend.username);
+
+            //     if (connected)
+            //     {
+            //         this.io.sockets.connected[connected.id].emit('user-connected', {username:user.username});
+            //         console.log(connected.id);
+            //     }
+            // }
+
+            // Rooms
+            socket.join(socket.uid);
+
+            socket.on('roomInvite', invite =>
+            {
+                console.log(invite.sender + " te ha invitado a unirse a su party (" + socket.uid + ")")
+
+                this.io.emit('partyInvite',
                 {
-                    this.io.sockets.connected[connected.id].emit('user-connected',{username:user.username});
-                    console.log(connected.id);
-                }
-            }
+                    sender: invite.sender,
+                    target: invite.target,
+                    roomID: socket.uid
+                });
+            });
+
+            // socket.on('requestJoin', userID =>
+            // {
+            //     this.io.emit('requestJoin',
+            //     {
+            //         username: user.username,
+            //         targetUserID: userID,
+            //         roomID: socket.uid
+            //     });
+            // });
+
+            // socket.on('joinRoom', roomID =>
+            // {
+            //     socket.join(roomID);
+
+            //     this.io.emit('joinParty',
+            //     {
+            //         username: user.username
+            //     });
+            // });
 
             //Evento Find Match
-            socket.on('findMatch',() =>
+            socket.on('findMatch', () =>
             {
-                let user = this.onlineUsers.find(u => u.id == socket.id);
                 console.log(`${user.username} esta buscando partida`);
+
                 matchmaking.addPlayer(user);
             });
 
             //Evento Chat Global
             socket.on('chat', msg =>
             {
-                let user = this.onlineUsers.find(u => u.id == socket.id);
-                
                 console.log(`${user.username} esta enviando un mensaje: ` + msg.message);
 
                 this.io.emit('chat',
@@ -73,7 +107,6 @@ class Sockets
             //Evento Chat Privado
             socket.on('privateChat', msg =>
             {
-                let user = this.onlineUsers.find(u => u.id == socket.id);
                 let targetUser = this.onlineUsers.find(u => u.username == msg.target);
                 
                 if (targetUser)
@@ -89,27 +122,29 @@ class Sockets
                 }
             });
 
-            //Evento para solicitud de amistad
-            socket.on('requestFriendship', username =>
-            {
-                let connected = this.onlineUsers.find(u => u.username == username);
-                if(connected)
-                {
-                    //Emit friendRequest
-                    console.log(connected.id);        
-                }
-            });
+            // //Evento para solicitud de amistad
+            // socket.on('requestFriendship', username =>
+            // {
+            //     let connected = this.onlineUsers.find(u => u.username == username);
+            //     if(connected)
+            //     {
+            //         //Emit friendRequest
+            //         console.log(connected.id);        
+            //     }
+            // });
 
             //Evento cuando se desconecta un cliente
             socket.on('disconnect', () =>
             {
                 this.onlineUsers = this.onlineUsers.filter(u => u.id != socket.id);
+
                 /*
                 AQUI DEBERIA VERIFICAR SI EL USUARIO DESCONECTADO
                 ESTA BUSCANDO PARTIDA 
                 */
+                
                 console.log('user disconnected');
-                usuarioConectado(user.uid,false);         
+                usuarioConectado(user.uid, false);         
             });
         });
     }
@@ -135,7 +170,7 @@ class Sockets
 
     lookForMatchReady()
     {
-        setInterval(()=>
+        setInterval(() =>
         {
             if(matchmaking.startingMatches.length>0)
             {
