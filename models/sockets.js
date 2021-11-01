@@ -21,7 +21,7 @@ class Sockets
     // Server Events
     socketsEvents()
     {
-        io.on('connection', async socket =>
+        this.io.on('connection', async socket =>
         {
             console.log('a user connected ' + socket.uid);
 
