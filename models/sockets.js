@@ -133,6 +133,16 @@ class Sockets
                 }
             });
 
+            //Evento para actualizar usuarios conectados
+            socket.on('updateUsers', () =>
+            {
+                console.log(`En la sala hay ${this.onlineUsers.length} usuario conectados`);
+                this.io.emit('updateUsers',
+                {
+                   users: this.onlineUsers,
+                });         
+            });
+
             // //Evento para solicitud de amistad
             // socket.on('requestFriendship', username =>
             // {
@@ -154,6 +164,13 @@ class Sockets
                 ESTA BUSCANDO PARTIDA 
                 */
                 
+                //Evento actualización lista usuarios conectados
+                console.log(`En la sala hay ${this.onlineUsers.length} usuario conectados`);
+                this.io.emit('updateUsers',
+                {
+                   users: this.onlineUsers,
+                });
+
                 console.log('user disconnected');
                 usuarioConectado(user.uid, false);         
             });
