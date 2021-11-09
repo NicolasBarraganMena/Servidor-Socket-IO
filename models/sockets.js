@@ -131,10 +131,14 @@ class Sockets
             //Evento para actualizar usuarios conectados
             socket.on('updateUsers', () =>
             {
-                console.log(`En la sala hay ${this.onlineUsers.length} usuario conectados`);
+                const usernames = [];
+                for(let value of this.onlineUsers){
+                    usernames.push(value.username);
+                }
+                console.log(`En la sala hay ${usernames.length} usuario conectados`);
                 this.io.emit('updateUsers',
-                {
-                   users: this.onlineUsers,
+                {  
+                   users: usernames,
                 });         
             });
 
@@ -160,11 +164,15 @@ class Sockets
                 */
                 
                 //Evento actualización lista usuarios conectados
-                console.log(`En la sala hay ${this.onlineUsers.length} usuario conectados`);
+                const usernames = [];
+                for(let value of this.onlineUsers){
+                    usernames.push(value.username);
+                }
+                console.log(`En la sala hay ${usernames.length} usuario conectados`);
                 this.io.emit('updateUsers',
-                {
-                   users: this.onlineUsers,
-                });
+                {  
+                   users: usernames,
+                }); 
 
                 console.log('user disconnected');
                 usuarioConectado(user.uid, false);         
