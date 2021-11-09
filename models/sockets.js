@@ -115,22 +115,17 @@ class Sockets
                 });
             });
             
-            //Evento Chat Privado
-            socket.on('privateChat', msg =>
+            //Evento Party Chat
+            socket.on('partyChat', msg =>
             {
-                let targetUser = this.onlineUsers.find(u => u.username == msg.target);
-                
-                if (targetUser)
+                console.log(`${user.username} esta enviando un mensaje por la party: ${msg.message}`);
+                      
+                this.io.emit('partyChat',
                 {
-                    console.log(`${targetUser.username} esta enviando un mensaje privado a ${targetUser}: ${msg.message}`);
-                    
-                    this.io.emit('privateChat',
-                    {
-                        username: user.username,
-                        message: msg.message,
-                        target: msg.target
-                    });
-                }
+                    username: user.username,
+                    message: msg.message,
+                    room: msg.room
+                });
             });
 
             // //Evento para solicitud de amistad
