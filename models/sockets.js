@@ -54,35 +54,46 @@ class Sockets
 
             socket.on('roomInvite', invite =>
             {
-                console.log(invite.sender + " te ha invitado a unirse a su party (" + socket.uid + ")")
+                let roomID = "party_" + user.username; // test
+
+                console.log(invite.sender + " ha invitado a " + invite.target + " a unirse a su party (" + roomID + ")")
 
                 this.io.emit('partyInvite',
                 {
                     sender: invite.sender,
                     target: invite.target,
-                    roomID: socket.uid
+                    roomID: roomID
                 });
             });
 
-            // socket.on('requestJoin', userID =>
-            // {
-            //     this.io.emit('requestJoin',
-            //     {
-            //         username: user.username,
-            //         targetUserID: userID,
-            //         roomID: socket.uid
-            //     });
-            // });
+            socket.on('requestJoin', invite =>
+            {
+                console.log(invite.sender + " solicita a " + invite.target + " a unirse a su party (" + invite.roomID + ")")
 
-            // socket.on('joinRoom', roomID =>
-            // {
-            //     socket.join(roomID);
+                this.io.emit('requestJoin',
+                {
+                    sender: invite.sender,
+                    target: invite.target,
+                    roomID: invite.roomID
+                });
+            });
 
-            //     this.io.emit('joinParty',
-            //     {
-            //         username: user.username
-            //     });
-            // });
+            socket.on('joinRoom', invite =>
+            {
+                console.log(invite.target + " se está intentando unir a la party de " + invite.sender + " (" + invite.roomID + ")")
+
+                //if (user.username == invite.target)
+                //{
+                //    socket.join(invite.roomID);
+                //    
+                    this.io.emit('joinedParty',
+                    {
+                        sender: invite.sender,
+                        target: invite.target,
+                        roomID: invite.roomID
+                    });
+                //}
+            });
 
             //Evento Find Match
             socket.on('findMatch', () =>
@@ -95,7 +106,7 @@ class Sockets
             //Evento Chat Global
             socket.on('chat', msg =>
             {
-                console.log(`${user.username} esta enviando un mensaje: ` + msg.message);
+                console.log(`${user.username} esta enviando un mensaje: ${msg.message}`);
 
                 this.io.emit('chat',
                 {
